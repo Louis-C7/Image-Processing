@@ -3,21 +3,24 @@
 #define SCISSOR_COSTMAP_H
 #include<cmath>
 #include"Scissor.h"
+
+// 数字化Cost
 void DigitizeCost(unsigned char* cst, double lCost)
 {
-	cst[0] = cst[1] = cst[2] = (unsigned char)(floor(__max(0.0, __min(255.0, lCost * 1000))));
+	cst[0] = cst[1] = cst[2] = (unsigned char)(floor(__max(0.0, __min(255.0, lCost * 1000))));  // floor()：向下取整
 }
 void MakeCostGraph(cv::Mat& OutputCostMap, const PixelNode* nodes, const cv::Mat& img);
-void MakeCostGraphImpl(unsigned char* costGraph, const PixelNode* nodes, const unsigned char* img, int width, int height);
+void MakeCostGraphImp(unsigned char* costGraph, const PixelNode* nodes, const unsigned char* img, int width, int height);
 
-
+// 这两个函数如果不分开写会出现错误
 void MakeCostGraph(cv::Mat& OutputCostMap, const PixelNode* nodes, const cv::Mat& img)
 {
 	OutputCostMap.create(img.rows * 3, img.cols * 3, CV_8UC3);
-	MakeCostGraphImpl(OutputCostMap.data, nodes, img.data, img.cols, img.rows);
+	MakeCostGraphImp(OutputCostMap.data, nodes, img.data, img.cols, img.rows);
 }
-void MakeCostGraphImpl(unsigned char* costGraph, const PixelNode* nodes, const unsigned char* img, int imgWidth, int imgHeight)
+void MakeCostGraphImp(unsigned char* costGraph, const PixelNode* nodes, const unsigned char* img, int imgWidth, int imgHeight)
 {
+	// 代价图每个像素有八个Cost，即代价图要比原图像要扩大三倍
 	int graphWidth = imgWidth * 3;
 	int graphHeight = imgHeight * 3;
 	int dgX = 3;
@@ -54,5 +57,4 @@ void MakeCostGraphImpl(unsigned char* costGraph, const PixelNode* nodes, const u
 }
 
 
-#endif // !UTILS_H
-
+#endif // !COSTMAP_H

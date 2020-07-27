@@ -1,12 +1,8 @@
 #pragma once
-#ifndef PIXELNODE_H
-#define PIXELNODE_H
-#include<opencv2\opencv.hpp>
-using namespace cv;
 #define INITIAL 0
 #define ACTIVE  1
 #define EXPANDED 2
-struct PixelNode
+class PixelNode
 {
 public:
 	int column, row;//表示结点所在矩阵中的行与列
@@ -22,14 +18,16 @@ public:
 		totalCost(0)
 	{}
 	void GetNodeOffset(int& offsetX, int& offsetY, int linkIndex);//从邻域0,1,2,3,4,5,6,7中获取偏移量
-	
-	//PixelNode& GetPixelNode(PixelNode* nodes, int r, int c, int width);
-	PixelNode& GetPixelNode(int r, int c, int width);
-	cv::Vec2f genVector(int linkIndex)
-	{
-		int offsetX, offsetY;
-		GetNodeOffset(offsetX, offsetY, linkIndex);
-		return cv::Vec2f(offsetX, offsetY);
+	int pqIndex;
+	int Index(void) const {
+		return pqIndex;
 	}
+	int& Index(void) {
+		return pqIndex;
+	}
+	int count = 0;//记录被选中的次数，用于路径冷却
 };
-#endif
+inline int operator < (const PixelNode& a, const PixelNode& b)
+{
+	return a.totalCost < b.totalCost;
+}

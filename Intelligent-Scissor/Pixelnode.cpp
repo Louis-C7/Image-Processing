@@ -6,7 +6,6 @@ void PixelNode::GetNodeOffset(int& offsetX, int& offsetY, int linkIndex)
 	*  4 0
 	*  567
 	*/
-
 	if (linkIndex == 0) {
 		offsetX = 1;
 		offsetY = 0;
@@ -40,6 +39,3 @@ void PixelNode::GetNodeOffset(int& offsetX, int& offsetY, int linkIndex)
 		offsetY = 1;
 	}
 }
-
-
-
